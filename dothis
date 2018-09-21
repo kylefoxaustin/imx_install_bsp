@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+docker run -i -v /home/kyle/media/kyle/1tb/linuxdata/imx8development/junkdock/imxpoky:/root/nxp/ $1
