@@ -1,8 +1,8 @@
-# imx_install_yocto_poky
+# imx_install_bsp
 
-This container's single purpsoe is to install Yocto 'Poky' SDK.
+This container's single purpsoe is to pull down any i.MX Yocto source/image repository
 
-It is flexible in that if you map a volume to /root/poky on your host machine, the full Poky SDK
+It is flexible in that if you map a volume to /root/nxp on your host machine, the full Yocto repository 
 will be copied to that volume on the host.
 
 There are two modes of operation:
@@ -11,31 +11,38 @@ There are two modes of operation:
 
 # Interactive mode
 This mode launches a simple terminal based script that presents you a menu of options.
-Choosing option 1) Install Poky will download and sync the Poky SDK to the container's /root/poky folder.
+Choosing option 1) Install i.MX BSP will then guide you through specifying which one.
+It has a series of defaults to use if you don't know which one to pull down.  The default is rocko
 
 # How to run in interactive mode
 In this example i have included a host volume in the command string.  You can omit the volume if you do not want it
 
-docker run -i -v /mypath/mydir:/root/poky <imx_install_yocto_poky>
+docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp> interactive
 
 The continer will execute and the menu system will appear in your terminal.
 select option 1, hit enter and the process will begin.
-Once Poky is downloaded, you have the option to run the oe-setup script (no options, default values)
-After this you can return to the main menu or exit the script.
+
 Once you exit the menu, the container stops.
 
 # how to run in non-interactive mode
-Non-interactive mode instructs the container to download the poky sdk to /root/poky inside the container.
-By default it also runs oe-setup.sh after download.
+Non-interactive mode instructs the container to download the yocto repository to /root/nxp inside the container.
 
-You instruct the container to run non-interactively by include the term "no_option" in the run command (without quotes).
-You also remove the "-i" option in the docker run command.
+to run non-interactive mode, use the docker run command listed above in interactive mode but omit the argument "interactive"
+so:
 
-docker run -v /mypath/mydir:/root/poky <imx_install_yocto_poky> no_option
+docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp>
 
 # how to build
 simple clone the project to your local host and run the following:
 
+Makefile based:
+
 $ make build <- builds the container
 $ make run <- runs a test container with default options
 $ make build run <- builds the container and runs it in a test mode
+
+"cleanrun" based
+I created this script to do a complete build after docker RM and docker image RM everything on your host.
+This made my life a bit easier with dependencies.
+WARNING:  running ./cleanrun WILL automatically stop all containers, rm all containers and delete all docker images on your host!!!!   
+
