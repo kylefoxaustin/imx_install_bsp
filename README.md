@@ -47,8 +47,11 @@ docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source ARG1 ARG2 AR
 where:
 
   ARG1 = URL for the codeaurora site where the BSP resides (e.g.: https://source.codeaurora.org/external/imx/imx-manifest)
+  
   ARG2 = Name of the i.MX BSP you desire (e.g. imx-linux-rocko)
-  ARG3 = version of the i.MX BSP (e.g. imx-4.9.88-2.0.0_ga.xml) 
+  
+  ARG3 = version of the i.MX BSP (e.g. imx-4.9.88-2.0.0_ga.xml) \
+  
 
 As an example:
 docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rocko imx-4.9.88-2.0.0_ga.xml
