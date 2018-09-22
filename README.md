@@ -43,6 +43,7 @@ docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp>
 if you want the container to process a specific BSP, then the format for your command is the following:
 
 docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source ARG1 ARG2 ARG3
+
 where:
   ARG1 = URL for the codeaurora site where the BSP resides (e.g.: https://source.codeaurora.org/external/imx/imx-manifest)
   ARG2 = Name of the i.MX BSP you desire (e.g. imx-linux-rocko)
