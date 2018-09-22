@@ -38,7 +38,7 @@ so:
 
 docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp>
 
-# how to build
+# How to build
 simple clone the project to your local host and run the following:
 
 Makefile based:
