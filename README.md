@@ -44,6 +44,11 @@ if you want the container to process a specific BSP, then the format for your co
 
 docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source <codeaurora site> <i.MX BSP name> <i.MX BSP version>
 
+
+docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source <codeaurora site> <i.MX BSP name> <i.MX BSP version>
+
+docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source <codeaurora site> <i.MX BSP name> <i.MX BSP version>
+  
 if you don't specify all three values, the container will use its defaults (which is the rocko bsp version)
 however, you cannot skip a value.. e.g. if you only want to include an i.MX BSP version # on the command line, you 
 must include the URL and BSP name.  however, if you include the Code Aurora URL and the i.MX BSP name but leave off the BSP version, then the container will default the version to the internal default it was programmed with. 
