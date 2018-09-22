@@ -42,7 +42,7 @@ docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp>
 
 if you want the container to process a specific BSP, then the format for your command is the following:
 
-docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source <codeaurora site> <i.MX BSP name> <i.MX BSP version>
+docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source codeaurora_site i.MX_BSP_name i.MX_BSP_version
 
 
 "docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source <codeaurora site> <i.MX BSP name> <i.MX BSP version>"
