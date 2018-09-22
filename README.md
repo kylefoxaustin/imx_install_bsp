@@ -17,7 +17,8 @@ It has a series of defaults to use if you don't know which one to pull down.  Th
 # How to run in interactive mode
 In this example i have included a host volume in the command string.  You can omit the volume if you do not want it
 
-docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp> interactive
+docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp> --interactive
+You can shorten the --interactive to just -i and it will run interactively
 
 The continer will execute and the menu system will appear in your terminal.
 select option 1, hit enter and the process will begin.
@@ -26,9 +27,10 @@ Once you exit the menu, the container stops.
 
 # Non-interactive mode
 This mode will run straight through installing the default i.MX BSP (default is rocko)
-At this time, i have not added the ability to select your desired BSP via command line.  This is
-a feature i'm working on.   But rocko is the latet published by NXP.  You can always modify startup.sh
-with whatever you desire to download
+
+There are two primary methods:
+1) utilize the default BSP naming stated within the startup.sh script (BSP name = rocko)
+2) input your desired BSP via the command line arguments of the docker run command
 
 # how to run in non-interactive mode
 Non-interactive mode instructs the container to download the yocto repository to /root/nxp inside the container.
@@ -37,6 +39,14 @@ to run non-interactive mode, use the docker run command listed above in interact
 so:
 
 docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp>
+
+if you want the container to process a specific BSP, then the format for your command is the following:
+
+docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source <CodeAurora URL> <i.MX BSP name> <i.MX BSP version>
+
+if you don't specify all three values, the container will use its defaults (which is the rocko bsp version)
+however, you cannot skip a value.. e.g. if you only want to include an i.MX BSP version # on the command line, you 
+must include the URL and BSP name.  however, if you include the Code Aurora URL and the i.MX BSP name but leave off the BSP version, then the container will default the version to the internal default it was programmed with. 
 
 # How to build
 simple clone the project to your local host and run the following:
