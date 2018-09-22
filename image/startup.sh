@@ -4,7 +4,7 @@
 
 # This is the ENTRYPOINT script which is run in the docker container imx_install_bsp
 # the purpose of the script is to provide an interactive or non-interactive method of
-# pulling down any i.MX yocto source base to the container and any host volume mapped to the container
+# pulling down any i.MX yocto source base
 #
 # When run without an argument, the script will pull the default i.MX BSP
 # namely: repo init -u  https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-rock -m imx-4.9.88-2.0.0_ga.xml
@@ -37,21 +37,6 @@ debug () {
 
 debug && echo "Beginning of startup.sh script"
 
-
-
-###############################
-#       process arguments    #
-#############################
-
-INTERACTIVE=1
-if [ "$1" != "interactive" ]; then
-    debug && echo "non-interactive mode"
-    INTERACTIVE=1 # user does NOT want interactive mode
-else
-    INTERACTIVE=0 # user WANTS interactive mode
-fi
-
-
 ###############################
 #       globals              #
 #############################
@@ -64,7 +49,47 @@ BINDIRECTORY="/usr/local/bin"
 REPOFILE="/usr/local/bin/repo"
 TERM=xterm	 
 POKYDIR="${HOME}/nxp/poky"
+CODEAUR=0
+IMXBSPNAME=0
+IMXBSPVERSION=0
+INTERACTIVE=1
+SOURCEEXISTS=0
 
+############################################
+#       process command line arguments    #
+##########################################
+
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -i | --interactive )    shift
+                                INTERACTIVE=0
+                                ;;
+        -s | --source )         CODEAUR=$2
+				IMXBSPNAME=$3
+				IMXBSPVERSION=$4
+				SOURCEEXISTS=1
+				shift
+				shift
+				shift
+				shift
+				;;
+
+        * )                     echo "Command line Arguments are invalid, your output will likely be incorrect or corrupt"
+				echo "Suggest exiting the container and restarting" 
+                                exit 1
+    esac
+done
+
+if [ $SOURCEEXISTS == 0 ]; then
+    
+    echo "SOURCE REPOSITORY:  Using default https://source.codeaurora.org/external/imx/imx-manifest"  
+    CODEAUR="https://source.codeaurora.org/external/imx/imx-manifest"
+    echo "BSP NAME:  using default imx-linux-rocko" 
+    IMXBSPNAME="imx-linux-rocko"
+    echo "BSP VERSION:  using default imx-4.9.88-2.0.0_ga.xml"  
+    IMXBSPVERSION="imx-4.9.88-2.0.0_ga.xml"
+fi
 
 
 ######################################
@@ -288,34 +313,28 @@ imx_BSP_install() {
 
 if [ "$1" == "non_interactive" ]; then
 	repo_install non_interactive
-	IMXBSPNAME=0
-	CODEAUR=0
-	IMXBSPVERSION=0
 	IMXPARENTDIR="${HOME}/nxp"
 	DIR="${HOME}/nxp/yocto-imx-bsp"
 	YESNOEXIT=0
-	echo "SOURCE REPOSITORY:  Using default https://source.codeaurora.org/external/imx/imx-manifest"  
-	CODEAUR="https://source.codeaurora.org/external/imx/imx-manifest"
-	echo "BSP NAME:  using default imx-linux-rocko" 
-	IMXBSPNAME="imx-linux-rocko"
-	echo "BSP VERSION:  using default imx-4.9.88-2.0.0_ga.xml"  
-	IMXBSPVERSION="imx-4.9.88-2.0.0_ga.xml"
+	echo "SOURCE REPOSITORY:  $CODEAUR"
+	echo "BSP NAME:  $IMXBSPNAME"
+	echo "BSP VERSION:  $IMXBSPVERSION"  
 	
 	echo "this is the init and sync that will be attempted"
 	echo "repo init -u $CODEAUR -b $IMXBSPNAME -m $IMXBSPVERSION"
 	debug && sleep 5
 	echo "beginning repo sync"
 	echo "install directory will be ./yocto-imx-bsp"
-	echo "mkdir $DIR/imx-4.9.88-2.0.0_ga"
+	echo "mkdir $DIR/$IMXBSPVERSION"
         debug && echo "i am in directory"
 	debug && pwd
-	mkdir -p $DIR/imx-4.9.88-2.0.0_ga
+	mkdir -p $DIR/$IMXBSPVERSION
 	debug && sleep 3
 	echo "attempting to chown $USER to own $IMXPARENTDIR and $DIR"
 	sudo chown $USER:$USER $IMXPARENTDIR
 	sudo chown $USER:$USER $DIR
-	echo "cd $DIR/imx-4.9.88-2.0.0_ga"
-	cd $DIR/imx-4.9.88-2.0.0_ga
+	echo "cd $DIR/$IMXBSPVERSION"
+	cd $DIR/$IMXBSPVERSION
 	debug && echo "i am now in directory"
 	debug && pwd
 	echo "initializing repo"
@@ -343,37 +362,34 @@ else
 	    STOPLOOP=0
 	    while [ $STOPLOOP -eq 0 ]
 	    do
-		IMXBSPNAME=0
-		CODEAUR=0
-		IMXBSPVERSION=0
 		IMXPARENTDIR="${HOME}/nxp"
 		DIR="${HOME}/nxp/yocto-imx-bsp"
 		YESNOEXIT=0
 		debug && echo "these are the directory values:  $IMXPARENTDIR $DIR "
 		echo "I need the source code repository URL"
-		echo "Just hit ENTER if you want to use default https://source.codeaurora.org/external/imx/imx-manifest"  
+		echo "Just hit ENTER if you want to use $CODEAUR"  
 		echo "please enter the URL:"
-		read CODEAUR
-		if [ -z "$CODEAUR" ]; then
-		    CODEAUR="https://source.codeaurora.org/external/imx/imx-manifest"
+		read INPUTSTRING
+		if [ "$INPUTSTRING" != "" ]; then
+	      	    CODEAUR=INPUTSTRING
 		fi
-
+		
 		echo "I need the name of the bsp" 
-		echo "Just hit ENTER if you want to use default imx-linux-rocko"  
+		echo "Just hit ENTER if you want to use default $IMXBSPNAME"  
 		echo "please enter the name:"
-		read IMXBSPNAME
-		if [ -z "$IMXBSPNAME" ]; then
-		    IMXBSPNAME="imx-linux-rocko"
+		read INPUTSTRING
+		if [ "$INPUTSTRING" != "" ]; then
+	      	    IMXBSPNAME=INPUTSTRING
 		fi
-
+	        
 		echo "I need the version of the bsp" 
-		echo "Just hit ENTER if you want to use default imx-4.9.88-2.0.0_ga.xml"  
+		echo "Just hit ENTER if you want to use $IMXBSPVERSION"   
 		echo "please enter the version:"
-		read IMXBSPVERSION
-		if [ -z "$IMXBSPVERSION" ]; then
-		    IMXBSPVERSION="imx-4.9.88-2.0.0_ga.xml"
+		read INPUTSTRING
+		if [ "$INPUTSTRING" != "" ]; then
+	      	    IMXBSPVERSION=INPUTSTRING
 		fi
-
+	        
 		echo "this is the init and sync I will attempt:"
 		echo "repo init -u $CODEAUR -b $IMXBSPNAME -m $IMXBSPVERSION"
 		echo "is this correct?  enter Y (to sync), N (to redo), E (to exit)"
@@ -382,16 +398,16 @@ else
 		
 		case $YESNOEXIT in 
 		    y|Y ) echo "beginning repo sync"
-			  echo "install directory will be ./yocto-imx-bsp"
+			  echo "install directory will be $DIR/$IMXBSPVERSION"
 			  
-			  echo "mkdir $DIR/imx-4.9.88-2.0.0_ga"
-			  mkdir -p $DIR/imx-4.9.88-2.0.0_ga
+			  echo "mkdir $DIR/$IMXBSPVERSION"
+			  mkdir -p $DIR/$IMXBSPVERSION
 			  echo "attempting to chown $USER to own $DIR"
 			  sudo chown $USER:$USER $IMXPARENTDIR
 			  sudo chown $USER:$USER $DIR
 			  
-			  echo "cd /nxp/$DIR/imx-4.9.88-2.0.0_ga"
-			  cd $DIR/imx-4.9.88-2.0.0_ga
+			  echo "cd /nxp/$DIR/$IMXBSPVERSION"
+			  cd $DIR/$IMXBSPVERSION
 
 			  echo "initializing repo"
 			  repo init -u $CODEAUR -b $IMXBSPNAME -m $IMXBSPVERSION
