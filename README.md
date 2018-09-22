@@ -24,6 +24,12 @@ select option 1, hit enter and the process will begin.
 
 Once you exit the menu, the container stops.
 
+# Non-interactive mode
+This mode will run straight through installing the default i.MX BSP (default is rocko)
+At this time, i have not added the ability to select your desired BSP via command line.  This is
+a feature i'm working on.   But rocko is the latet published by NXP.  You can always modify startup.sh
+with whatever you desire to download
+
 # how to run in non-interactive mode
 Non-interactive mode instructs the container to download the yocto repository to /root/nxp inside the container.
 
