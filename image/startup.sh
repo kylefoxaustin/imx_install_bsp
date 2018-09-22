@@ -4,7 +4,7 @@
 
 # This is the ENTRYPOINT script which is run in the docker container imx_install_bsp
 # the purpose of the script is to provide an interactive or non-interactive method of
-# pulling down any i.MX yocto source base
+# pulling down any i.MX yocto source base to the container and any host volume mapped to the container
 #
 # When run without an argument, the script will pull the default i.MX BSP
 # namely: repo init -u  https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-rock -m imx-4.9.88-2.0.0_ga.xml
@@ -106,6 +106,7 @@ debug && sleep 2
 
 ######################################
 # clean up supervisord.conf        ##
+# this is for docker container     #
 ####################################
 
 debug && echo "about to remove \%USER\%:\%USER\% from supervisord.con"
