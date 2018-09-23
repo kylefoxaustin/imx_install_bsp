@@ -60,6 +60,30 @@ if you don't specify all three values, the container will use its defaults (whic
 however, you cannot skip a value.. e.g. if you only want to include an i.MX BSP version # on the command line, you 
 must include the URL and BSP name.  however, if you include the Code Aurora URL and the i.MX BSP name but leave off the BSP version, then the container will default the version to the internal default it was programmed with. 
 
+# Simple examples of use
+
+assume the name of the docker image is imx_install_bsp and this is what you will docker run
+
+Basic interactive examples:
+- docker run -i imx_install_bsp --interactive
+      --> runs the container interactively with the terminal based menu.  You can choose your BSP to download within the menu
+      --> the BSP will be placed within the container at /root/nxp.
+
+- docker run -i imx_install_bsp --interactive --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rock imx-4.9.88-2.0.0_ga.xml
+      --> this will run the interactive version and the default BSP sources will be what you placed in the command line (e.g. imx-linux-rocko)
+      --> the BSP will be placed within the container at /root/nxp
+      
+- docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --interactive
+      --> same as 1st example however the output of the container will appear in the host directory /mypath/mydir as well as in the container /root/nxp/
+
+- docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --interactive --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rock imx-4.9.88-2.0.0_ga.xml
+     --> same as 2nd example except the BSP will be placed within the container at /root/nxp as well as the host directory /mypath/mydir
+
+Basic non-interactive examples:
+- non interactive examples are exactly the same as the interactive examples except you will remove the --interactive flag.
+- by doing this the container will run to completion and then exit.   The BSP will be loaded into the container at /root/nxp and if you mapped a host directory,
+  in /mypath/mydir as well
+  
 # How to build
 simple clone the project to your local host and run the following:
 
