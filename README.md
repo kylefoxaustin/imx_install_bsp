@@ -54,7 +54,8 @@ where:
   
 
 As an example:
-     docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rocko imx-4.9.88-2.0.0_ga.xml
+
+        docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rocko imx-4.9.88-2.0.0_ga.xml
 
 if you don't specify all three values, the container will use its defaults (which is the rocko bsp version)
 however, you cannot skip a value.. e.g. if you only want to include an i.MX BSP version # on the command line, you 
