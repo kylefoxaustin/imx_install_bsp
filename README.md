@@ -17,7 +17,7 @@ It has a series of defaults to use if you don't know which one to pull down.  Th
 # How to run in interactive mode
 In this example i have included a host volume in the command string.  You can omit the volume if you do not want it
 
-docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp> --interactive
+    docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp> --interactive
 You can shorten the --interactive to just -i and it will run interactively
 
 The continer will execute and the menu system will appear in your terminal.
@@ -38,11 +38,11 @@ Non-interactive mode instructs the container to download the yocto repository to
 to run non-interactive mode, use the docker run command listed above in interactive mode but omit the argument "interactive"
 so:
 
-docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp>
+    docker run -i -v /mypath/mydir:/root/poky <imx_install_bsp>
 
 if you want the container to process a specific BSP, then the format for your command is the following:
 
-docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source ARG1 ARG2 ARG3
+    docker run -i -v /mypath/mydir:/root/nxp <imx_install_bsp> --source ARG1 ARG2 ARG3
 
 where:
 
@@ -54,7 +54,7 @@ where:
   
 
 As an example:
-docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rocko imx-4.9.88-2.0.0_ga.xml
+     docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rocko imx-4.9.88-2.0.0_ga.xml
 
 if you don't specify all three values, the container will use its defaults (which is the rocko bsp version)
 however, you cannot skip a value.. e.g. if you only want to include an i.MX BSP version # on the command line, you 
@@ -66,22 +66,22 @@ assume the name of the docker image is imx_install_bsp and this is what you will
 
 Basic interactive examples:
 
-    --> docker run -i imx_install_bsp --interactive
+    docker run -i imx_install_bsp --interactive
 
 
  runs the container interactively with the terminal based menu.  You can choose your BSP to download within the menu
  the BSP will be placed within the container at /root/nxp.
       
 
-    --> docker run -i imx_install_bsp --interactive --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rock imx-4.9.88-2.0.0_ga.xml
+    docker run -i imx_install_bsp --interactive --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rock imx-4.9.88-2.0.0_ga.xml
 
 this will run the interactive version and the default BSP sources will be what you placed in the command line (e.g. imx-linux-rocko).  The BSP will be placed within the container at /root/nxp
       
-    --> docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --interactive\
+    docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --interactive\
 
 same as 1st example however the output of the container will appear in the host directory /mypath/mydir as well as in the container /root/nxp/
 
-    --> docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --interactive --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rock imx-4.9.88-2.0.0_ga.xml
+    docker run -i -v /mypath/mydir:/root/nxp imx_install_bsp --interactive --source https://source.codeaurora.org/external/imx/imx-manifest imx-linux-rock imx-4.9.88-2.0.0_ga.xml
 
 same as 2nd example except the BSP will be placed within the container at /root/nxp as well as the host directory /mypath/mydir
 
