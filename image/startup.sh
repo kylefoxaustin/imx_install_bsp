@@ -7,7 +7,7 @@
 # pulling down any i.MX yocto source base
 #
 # When run without an argument, the script will pull the default i.MX BSP
-# namely: repo init -u  https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-rock -m imx-4.9.88-2.0.0_ga.xml
+# namely: repo init -u  https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-rocko -m imx-4.9.88-2.0.0_ga.xml
 #
 # The directory is hard coded to $HOME/nxp/imx-yocto-bsp which the BSP itself is pulled into
 #
