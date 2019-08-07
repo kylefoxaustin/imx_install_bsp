@@ -103,8 +103,5 @@ $ make build run <- builds the container and runs it in a test mode
 
 $ make shell <-- after performing a make run, executing a make shell command will docker exec -it bash to the running container
 
-"cleanrun" based
-I created this script to do a complete build after docker rm of all containers on your host.
-This made my life a bit easier with dependencies and cluttered up containers with various builds.
-WARNING:  running ./cleanrun WILL automatically stop all containers, rm all containers and will not give you an option to stop!!!! 
+
 
