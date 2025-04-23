@@ -1,6 +1,6 @@
 # imx_install_bsp
 
-This container's single purpsoe is to pull down any i.MX Yocto source/image repository
+This container's single purpose is to pull down any i.MX Yocto source/image repository
 
 It is flexible in that if you map a volume to /root/nxp on your host machine, the full Yocto repository 
 will be copied to that volume on the host.
